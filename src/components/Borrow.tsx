@@ -42,6 +42,12 @@ export default function Dashboard() {
         args: [parseEther(cltInput)],
     })
 
+    const BorrowSimulationResult = useSimulateContract({
+        ...contracts.borrowFi,
+        functionName: "borrow",
+        args: [parseEther(bfiInput)],
+    })
+
     const handleAddCollateral = async () => {
         if (!cltInput) {
             setCltInputError("Enter CLT amount jor");
@@ -88,6 +94,29 @@ export default function Dashboard() {
             setBfiInputError("No vex me! Enter BFI amount");
             return
         };
+
+        const parsedAmount = parseEther(bfiInput);
+
+        try {
+
+            if(BorrowSimulationResult.isError){
+                toast.error(BorrowSimulationResult.error.message);
+                return;
+            }
+            console.log("BorrowSimulationResult", BorrowSimulationResult.status);
+            
+            await writeContractAsync({
+                ...contracts.borrowFi,
+                functionName: "borrow",
+                args: [parsedAmount]
+            });
+
+            setBfiInput("");
+            toast.success("Successfully borrowed!" + parsedAmount + " BFI");
+        } catch (error) {
+            console.error("Error borrowing:", error);
+            toast.error(`Error: ${error instanceof Error ? error.message : 'Failed to borrow'}`);
+        }
     }
 
 
