@@ -7,9 +7,11 @@ import toast from "react-hot-toast";
 export default function Dashboard() {
 
     const [cltInput, setCltInput] = useState("");
+    const [bfiInput, setBfiInput] = useState("");
     const { address: connectedAccount } = useAccount();
     const { writeContractAsync } = useWriteContract();
-    const [inputError, setInputError] = useState("");
+    const [cltInputError, setCltInputError] = useState("");
+    const [bfiInputError, setBfiInputError] = useState("");
 
     const formatNumber = (value: bigint | undefined) => {
         if (value === undefined) return "0.00";
@@ -18,6 +20,12 @@ export default function Dashboard() {
 
     const { data: userCLT } = useReadContract({
         ...contracts.cltToken,
+        functionName: "balanceOf",
+        args: [connectedAccount ?? zeroAddress]
+    });
+
+    const { data: userBFI } = useReadContract({
+        ...contracts.borrowToken,
         functionName: "balanceOf",
         args: [connectedAccount ?? zeroAddress]
     });
@@ -36,7 +44,7 @@ export default function Dashboard() {
 
     const handleAddCollateral = async () => {
         if (!cltInput) {
-            setInputError("Please enter an amount");
+            setCltInputError("Enter CLT amount jor");
             return
         };
         const parsedAmount = parseEther(cltInput);
@@ -75,6 +83,13 @@ export default function Dashboard() {
         }
     };
 
+    const handleBorrow = async () => {
+        if(!bfiInput){
+            setBfiInputError("No vex me! Enter BFI amount");
+            return
+        };
+    }
+
 
     return (
         <div className="p-4 md:p-8">
@@ -95,7 +110,7 @@ export default function Dashboard() {
                                 value={cltInput}
                                 onChange={(e) => setCltInput(e.target.value)}
                                 placeholder="Enter CLT amount"
-                                className={` ${inputError ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                                className={` ${cltInputError ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                             />
                             <button
                                 onClick={handleAddCollateral}
@@ -104,36 +119,36 @@ export default function Dashboard() {
                                 Add Collateral
                             </button>
                         </div>
-                        <p className="text-md text-gray-400 gap-6 flex items-center">
+                        <p className="text-md text-gray-400 gap-2 md:gap-6 flex items-center">
                             <p>Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
-                            {inputError && <p className="text-red-500">{inputError}</p>}
+                            {cltInputError && <p className="text-red-500">{cltInputError}</p>}
                         </p>
                     </div>
                 </div>
 
                 <div className="md:w-1/2 w-full p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
                     <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                        Add Collateral
+                        Borrow
                     </h2>
                     <div className="space-y-4">
                         <div className="flex flex-col sm:flex-row gap-4">
                             <input
                                 type="number"
-                                value={cltInput}
-                                onChange={(e) => setCltInput(e.target.value)}
-                                placeholder="Enter CLT amount"
-                                className={` ${inputError ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                                value={bfiInput}
+                                onChange={(e) => setBfiInput(e.target.value)}
+                                placeholder="Enter BFI amount"
+                                className={` ${bfiInputError ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                             />
                             <button
-                                onClick={handleAddCollateral}
+                                onClick={handleBorrow}
                                 className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
                             >
-                                Add Collateral
+                                Borrow
                             </button>
                         </div>
-                        <p className="text-md text-gray-400 gap-6 flex items-center">
-                            <p>Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
-                            {inputError && <p className="text-red-500">{inputError}</p>}
+                        <p className="text-md text-gray-400 gap-2 md:gap-6 flex items-center">
+                            <p>Available: <span className="text-blue-400">{formatNumber(userBFI)} BFI</span> </p>
+                            {bfiInputError && <p className="text-red-500">{bfiInputError}</p>}
                         </p>
                     </div>
                 </div>
