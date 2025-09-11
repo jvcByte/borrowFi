@@ -46,7 +46,13 @@ export default function SideBar() {
                         >
                             <span>Borrow</span>
                         </Link>
-                        
+                        <Link
+                            to="/repay"
+                            className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            onClick={() => setIsSidebarOpen(false)}
+                        >
+                            <span>Repay</span>
+                        </Link>
                     </div>
                 </div>
             </div>

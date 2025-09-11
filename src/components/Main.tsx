@@ -3,6 +3,7 @@ import Header from "./Header";
 import SideBar from "./Sidebar";
 import Dashboard from "./Dashboard";
 import Borrow from "./Borrow";
+import Repay from "./Repay";
 
 const Main = () => {
   return (
@@ -15,6 +16,7 @@ const Main = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/borrow" element={<Borrow />} />
+              <Route path="/repay" element={<Repay />} />
             </Routes>
           </div>
         </div>
