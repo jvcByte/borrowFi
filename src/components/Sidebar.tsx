@@ -35,7 +35,7 @@ export default function SideBar() {
                             <span>Dashboard</span>
                         </a>
                         <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
-                            <span>Profile</span>
+                            <span>Borrow</span>
                         </a>
                     </div>
                 </div>
