@@ -77,7 +77,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="p-4 md:p-8">
+        <div className="p-4 md:p-8 max-w-[1500px] mx-auto">
             <h1 className="text-3xl mt-15 md:mt-0 font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
                 Welcome, {connectedAccount?.slice(0, 6) + "..." + connectedAccount?.slice(-4)}
             </h1>

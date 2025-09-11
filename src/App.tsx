@@ -1,20 +1,17 @@
-import { useAccount } from "wagmi";
 import Main from "./components/Main";
-import Welcome from "./components/Welcome";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { config } from "./config";
+
+const queryClient = new QueryClient();
 
 function App() {
-  const { isConnected } = useAccount();
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {isConnected ? (
-        <>
-          <Main />
-        </>
-      ) : (
-        <Welcome />
-      )}
-    </div>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <Main />
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function SideBar() {
@@ -26,17 +27,26 @@ export default function SideBar() {
             {/* Sidebar */}
             <div
                 className={`${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
-            fixed md:fixed inset-y-0 top-16 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
-            bg-gray-900 border-r border-gray-800 overflow-y-auto`}
+                fixed md:fixed inset-y-0 top-16 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
+                bg-gray-900 border-r border-gray-800 overflow-y-auto`}
             >
                 <div className="flex-1 p-4 overflow-y-hidden">
-                    <div className="space-y-2 ">
-                        <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
+                    <div className="space-y-2">
+                        <Link
+                            to="/"
+                            className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            onClick={() => setIsSidebarOpen(false)}
+                        >
                             <span>Dashboard</span>
-                        </a>
-                        <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
+                        </Link>
+                        <Link
+                            to="/borrow"
+                            className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            onClick={() => setIsSidebarOpen(false)}
+                        >
                             <span>Borrow</span>
-                        </a>
+                        </Link>
+                        
                     </div>
                 </div>
             </div>
