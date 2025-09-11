@@ -112,7 +112,7 @@ export default function Borrow() {
             });
 
             setBfiInput("");
-            toast.success("Successfully borrowed!" + parsedAmount + " BFI");
+            toast.success("Successfully borrowed!" + bfiInput + " BFI");
         } catch (error) {
             console.error("Error borrowing:", error);
             toast.error(`Error: ${error instanceof Error ? error.message : 'Failed to borrow'}`);
