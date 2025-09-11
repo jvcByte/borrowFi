@@ -3,6 +3,7 @@ import contracts from "../contracts";
 import { formatEther, parseEther, zeroAddress } from "viem";
 import { useState } from "react";
 import Header from "./Header";
+import SideBar from "./Sidebar";
 
 const Main = () => {
   // Form state
@@ -114,41 +115,7 @@ const Main = () => {
       <Header />
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Mobile menu button - Only visible on mobile */}
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="md:hidden fixed top-20 right-4 z-50 p-2 rounded-md bg-gray-800 text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-          aria-expanded={isSidebarOpen}
-        >
-          <span className="sr-only">Open sidebar</span>
-          {isSidebarOpen ? (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
-
-        {/* Sidebar */}
-        <div
-          className={`${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
-            fixed md:fixed inset-y-0 top-16 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
-            bg-gray-900 border-r border-gray-800 overflow-y-auto`}
-        >
-          <div className="flex-1 p-4 overflow-y-hidden">
-            <div className="space-y-2 ">
-              <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
-                <span>Dashboard</span>
-              </a>
-              <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
-                <span>Profile</span>
-              </a>
-            </div>
-          </div>
-        </div>
+        <SideBar />
 
         {/* Main content */}
         <div className="flex-1 overflow-y-auto md:ml-64">
