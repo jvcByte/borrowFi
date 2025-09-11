@@ -1,14 +1,16 @@
-import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { useAccount, useReadContract, useWriteContract, useSimulateContract } from "wagmi";
 import contracts from "../contracts";
 import { formatEther, parseEther, zeroAddress } from "viem";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
 
     const [cltInput, setCltInput] = useState("");
     const { address: connectedAccount } = useAccount();
     const { writeContractAsync } = useWriteContract();
-    const [error, setError] = useState("");
+    const [inputError, setInputError] = useState("");
+
     const formatNumber = (value: bigint | undefined) => {
         if (value === undefined) return "0.00";
         return parseFloat(formatEther(value)).toFixed(2);
@@ -20,14 +22,39 @@ export default function Dashboard() {
         args: [connectedAccount ?? zeroAddress]
     });
 
+    const ApproveSimulationResult = useSimulateContract({
+        ...contracts.cltToken,
+        functionName: "approve",
+        args: [contracts.borrowFi.address, parseEther(cltInput)],
+    })
+
+    const AddCollateralSimulationResult = useSimulateContract({
+        ...contracts.borrowFi,
+        functionName: "addCollateral",
+        args: [parseEther(cltInput)],
+    })
+
     const handleAddCollateral = async () => {
         if (!cltInput) {
-            setError("Please enter an amount");
+            setInputError("Please enter an amount");
             return
         };
         const parsedAmount = parseEther(cltInput);
 
         try {
+
+            if(ApproveSimulationResult.isError){
+                toast.error(ApproveSimulationResult.error.message);
+                return;
+            }
+            console.log("ApproveSimulationResult", ApproveSimulationResult.status);
+
+            if(AddCollateralSimulationResult.isError){
+                toast.error(AddCollateralSimulationResult.error.message);
+                return;
+            }
+            console.log("AddCollateralSimulationResult", AddCollateralSimulationResult.status);
+            
             await writeContractAsync({
                 ...contracts.cltToken,
                 functionName: "approve",
@@ -41,10 +68,10 @@ export default function Dashboard() {
             });
 
             setCltInput("");
-            alert("Successfully added collateral!");
+            toast.success("Successfully added collateral!");
         } catch (error) {
             console.error("Error adding collateral:", error);
-            alert(`Error: ${error instanceof Error ? error.message : 'Failed to add collateral'}`);
+            toast.error(`Error: ${error instanceof Error ? error.message : 'Failed to add collateral'}`);
         }
     };
 
@@ -68,7 +95,7 @@ export default function Dashboard() {
                                 value={cltInput}
                                 onChange={(e) => setCltInput(e.target.value)}
                                 placeholder="Enter CLT amount"
-                                className={` ${error ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                                className={` ${inputError ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                             />
                             <button
                                 onClick={handleAddCollateral}
@@ -79,7 +106,7 @@ export default function Dashboard() {
                         </div>
                         <p className="text-md text-gray-400 gap-6 flex items-center">
                             <p>Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
-                            {error && <p className="text-red-500">{error}</p>}
+                            {inputError && <p className="text-red-500">{inputError}</p>}
                         </p>
                     </div>
                 </div>
@@ -95,7 +122,7 @@ export default function Dashboard() {
                                 value={cltInput}
                                 onChange={(e) => setCltInput(e.target.value)}
                                 placeholder="Enter CLT amount"
-                                className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className={` ${inputError ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                             />
                             <button
                                 onClick={handleAddCollateral}
@@ -104,8 +131,9 @@ export default function Dashboard() {
                                 Add Collateral
                             </button>
                         </div>
-                        <p className="text-sm text-gray-400">
-                            Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
+                        <p className="text-md text-gray-400 gap-6 flex items-center">
+                            <p>Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
+                            {inputError && <p className="text-red-500">{inputError}</p>}
                         </p>
                     </div>
                 </div>
