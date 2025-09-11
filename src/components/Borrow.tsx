@@ -5,20 +5,15 @@ import { useState } from "react";
 
 export default function Dashboard() {
 
-    // Form state
     const [cltInput, setCltInput] = useState("");
-
-    // Wallet and contract interaction
     const { address: connectedAccount } = useAccount();
     const { writeContractAsync } = useWriteContract();
-
-    // Formatting helper
+    const [error, setError] = useState("");
     const formatNumber = (value: bigint | undefined) => {
         if (value === undefined) return "0.00";
         return parseFloat(formatEther(value)).toFixed(2);
     };
 
-    // Contract data fetching
     const { data: userCLT } = useReadContract({
         ...contracts.cltToken,
         functionName: "balanceOf",
@@ -26,25 +21,25 @@ export default function Dashboard() {
     });
 
     const handleAddCollateral = async () => {
-        if (!cltInput) return;
+        if (!cltInput) {
+            setError("Please enter an amount");
+            return
+        };
         const parsedAmount = parseEther(cltInput);
 
         try {
-            // First approve the contract to spend CLT
             await writeContractAsync({
                 ...contracts.cltToken,
                 functionName: "approve",
                 args: [contracts.borrowFi.address, parsedAmount],
             });
 
-            // Then add collateral
             await writeContractAsync({
                 ...contracts.borrowFi,
                 functionName: "addCollateral",
                 args: [parsedAmount]
             });
 
-            // Clear input on success
             setCltInput("");
             alert("Successfully added collateral!");
         } catch (error) {
@@ -73,7 +68,7 @@ export default function Dashboard() {
                                 value={cltInput}
                                 onChange={(e) => setCltInput(e.target.value)}
                                 placeholder="Enter CLT amount"
-                                className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className={` ${error ? "border-red-500" : "border-gray-600"} flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                             />
                             <button
                                 onClick={handleAddCollateral}
@@ -82,8 +77,9 @@ export default function Dashboard() {
                                 Add Collateral
                             </button>
                         </div>
-                        <p className="text-sm text-gray-400">
-                            Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
+                        <p className="text-md text-gray-400 gap-6 flex items-center">
+                            <p>Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
+                            {error && <p className="text-red-500">{error}</p>}
                         </p>
                     </div>
                 </div>
