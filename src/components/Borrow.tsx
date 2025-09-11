@@ -60,30 +60,58 @@ export default function Dashboard() {
                 Borrow
             </h1>
 
-            {/* Add Collateral */}
-            <div className="p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
-                <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                    Add Collateral
-                </h2>
-                <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <input
-                            type="number"
-                            value={cltInput}
-                            onChange={(e) => setCltInput(e.target.value)}
-                            placeholder="Enter CLT amount"
-                            className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                        <button
-                            onClick={handleAddCollateral}
-                            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
-                        >
-                            Add Collateral
-                        </button>
+            <div className="flex flex-col md:flex-row gap-6 max-w-full mx-auto">
+                {/* Add Collateral */}
+                <div className="md:w-1/2 w-full p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
+                    <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        Add Collateral
+                    </h2>
+                    <div className="space-y-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <input
+                                type="number"
+                                value={cltInput}
+                                onChange={(e) => setCltInput(e.target.value)}
+                                placeholder="Enter CLT amount"
+                                className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                            <button
+                                onClick={handleAddCollateral}
+                                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                                Add Collateral
+                            </button>
+                        </div>
+                        <p className="text-sm text-gray-400">
+                            Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
+                        </p>
                     </div>
-                    <p className="text-sm text-gray-400">
-                        Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
-                    </p>
+                </div>
+
+                <div className="md:w-1/2 w-full p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
+                    <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        Add Collateral
+                    </h2>
+                    <div className="space-y-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <input
+                                type="number"
+                                value={cltInput}
+                                onChange={(e) => setCltInput(e.target.value)}
+                                placeholder="Enter CLT amount"
+                                className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                            <button
+                                onClick={handleAddCollateral}
+                                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                                Add Collateral
+                            </button>
+                        </div>
+                        <p className="text-sm text-gray-400">
+                            Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
+                        </p>
+                    </div>
                 </div>
             </div>
 
