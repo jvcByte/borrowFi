@@ -20,6 +20,9 @@ createRoot(document.getElementById("root")!).render(
           theme={customRainbowKitTheme}
           modalSize="compact"
           showRecentTransactions
+          appInfo={{
+            appName: "BorrowFi",
+          }}
         >
           <App />
         </RainbowKitProvider>
