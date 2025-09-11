@@ -2,6 +2,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import contracts from "../contracts";
 import { formatEther, parseEther, zeroAddress } from "viem";
 import { useState } from "react";
+import Header from "./Header";
 
 const Main = () => {
   // Form state
@@ -78,10 +79,12 @@ const Main = () => {
     functionName: "totalSupply"
   });
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const handleAddCollateral = async () => {
     if (!cltInput) return;
     const parsedAmount = parseEther(cltInput);
-    
+
     try {
       // First approve the contract to spend CLT
       await writeContractAsync({
@@ -96,7 +99,7 @@ const Main = () => {
         functionName: "addCollateral",
         args: [parsedAmount]
       });
-      
+
       // Clear input on success
       setCltInput("");
       alert("Successfully added collateral!");
@@ -107,122 +110,171 @@ const Main = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-          Borrowing Dashboard
-        </h1>
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+      <Header />
 
-        {/* Market Overview */}
-        <div className="p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
-          <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-            Market Overview
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
-              <h3 className="text-gray-400 text-sm font-medium mb-1">Total Value Locked</h3>
-              <p className="text-2xl font-bold text-white">{formatNumber(totalCollateral)} CLT</p>
-              <div className="mt-2 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
-            </div>
-            <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
-              <h3 className="text-gray-400 text-sm font-medium mb-1">Total Borrowed</h3>
-              <p className="text-2xl font-bold text-white">{formatNumber(totalBorrowed)} BFI</p>
-              <div className="mt-2 h-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
-            </div>
-            <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
-              <h3 className="text-gray-400 text-sm font-medium mb-1">Total Collateral Token Supply</h3>
-              <p className="text-2xl font-bold text-white">{formatNumber(totalCltSupply)} CLT</p>
-              <div className="mt-2 h-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
-            </div>
-            <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
-              <h3 className="text-gray-400 text-sm font-medium mb-1">Total Borrow Token Supply</h3>
-              <p className="text-2xl font-bold text-white">{formatNumber(totalBorrowTokenSupply)} BFI</p>
-              <div className="mt-2 h-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* User Position */}
-          <div className="p-6 bg-gray-800 rounded-xl border border-gray-700">
-            <h2 className="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Your Position
-            </h2>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400">Collateral:</span>
-                <span className="text-lg font-medium">{formatNumber(userCollateral)} CLT</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400">Loan:</span>
-                <span className="text-lg font-medium">{formatNumber(userLoan)} BFI</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400">LTV:</span>
-                <span className="text-lg font-medium">
-                  {ltcRatio ? (Number(ltcRatio) / 1e16).toFixed(2) : '0.00'}%
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-gray-400">Status:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  isHealthy ? 'bg-green-900/30 text-green-400' : !isHealthy ? 'bg-red-900/30 text-red-400' : 'bg-gray-900/30 text-gray-400'
-                }`}>
-                  {isHealthy ? 'Healthy' : !isHealthy ? 'Not Healthy' : 'Unknown' }
-                </span>
-              </div>
-            </div>
-          </div>
+      <div className="flex flex-1 overflow-hidden">
+        {/* Mobile menu button - Only visible on mobile */}
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="md:hidden fixed top-20 right-4 z-50 p-2 rounded-md bg-gray-800 text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+          aria-expanded={isSidebarOpen}
+        >
+          <span className="sr-only">Open sidebar</span>
+          {isSidebarOpen ? (
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
 
-          {/* Balances */}
-          <div className="p-6 bg-gray-800 rounded-xl border border-gray-700">
-            <h2 className="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Balances
-            </h2>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400">Your CLT:</span>
-                <span className="text-lg font-medium">{formatNumber(userCLT)} CLT</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400">Your BFI:</span>
-                <span className="text-lg font-medium">{formatNumber(userBFI)} BFI</span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-gray-400">Available to Borrow:</span>
-                <span className="text-lg font-medium text-blue-400">{formatNumber(availableBorrow)} BFI</span>
-              </div>
+        {/* Sidebar */}
+        <div
+          className={`${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
+            fixed md:fixed inset-y-0 top-16 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
+            bg-gray-900 border-r border-gray-800 overflow-y-auto`}
+        >
+          <div className="flex-1 p-4 overflow-y-hidden">
+            <div className="space-y-2 ">
+              <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
+                <span>Dashboard</span>
+              </a>
+              <a href="#" className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200">
+                <span>Profile</span>
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Add Collateral */}
-        <div className="p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
-          <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-            Add Collateral
-          </h2>
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="number"
-                value={cltInput}
-                onChange={(e) => setCltInput(e.target.value)}
-                placeholder="Enter CLT amount"
-                className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <button
-                onClick={handleAddCollateral}
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
-              >
+        {/* Main content */}
+        <div className="flex-1 overflow-y-auto md:ml-64">
+          {/* Overlay for mobile when sidebar is open */}
+          {isSidebarOpen && (
+            <div
+              className="fixed md:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
+          <div className="p-4 md:p-8">
+            <h1 className="text-3xl mt-15 md:mt-0 font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+              Welcome, {connectedAccount?.slice(0, 6) + "..." + connectedAccount?.slice(-4)}
+            </h1>
+
+            {/* Market Overview */}
+            <div className="p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
+              <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Market Overview
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
+                  <h3 className="text-gray-400 text-sm font-medium mb-1">Total Value Locked</h3>
+                  <p className="text-2xl font-bold text-white">{formatNumber(totalCollateral)} CLT</p>
+                  <div className="mt-2 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+                </div>
+                <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
+                  <h3 className="text-gray-400 text-sm font-medium mb-1">Total Borrowed</h3>
+                  <p className="text-2xl font-bold text-white">{formatNumber(totalBorrowed)} BFI</p>
+                  <div className="mt-2 h-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
+                </div>
+                <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
+                  <h3 className="text-gray-400 text-sm font-medium mb-1">Total Collateral Token Supply</h3>
+                  <p className="text-2xl font-bold text-white">{formatNumber(totalCltSupply)} CLT</p>
+                  <div className="mt-2 h-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
+                </div>
+                <div className="p-5 bg-gray-700/50 rounded-xl border border-gray-600">
+                  <h3 className="text-gray-400 text-sm font-medium mb-1">Total Borrow Token Supply</h3>
+                  <p className="text-2xl font-bold text-white">{formatNumber(totalBorrowTokenSupply)} BFI</p>
+                  <div className="mt-2 h-1 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {/* User Position */}
+              <div className="p-6 bg-gray-800 rounded-xl border border-gray-700">
+                <h2 className="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  Your Position
+                </h2>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                    <span className="text-gray-400">Collateral:</span>
+                    <span className="text-lg font-medium">{formatNumber(userCollateral)} CLT</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                    <span className="text-gray-400">Loan:</span>
+                    <span className="text-lg font-medium">{formatNumber(userLoan)} BFI</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                    <span className="text-gray-400">LTV:</span>
+                    <span className="text-lg font-medium">
+                      {ltcRatio ? (Number(ltcRatio) / 1e16).toFixed(2) : '0.00'}%
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-400">Status:</span>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${isHealthy ? 'bg-green-900/30 text-green-400' : !isHealthy ? 'bg-red-900/30 text-red-400' : 'bg-gray-900/30 text-gray-400'
+                      }`}>
+                      {isHealthy ? 'Healthy' : !isHealthy ? 'Not Healthy' : 'Unknown'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Balances */}
+              <div className="p-6 bg-gray-800 rounded-xl border border-gray-700">
+                <h2 className="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  Balances
+                </h2>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                    <span className="text-gray-400">Your CLT:</span>
+                    <span className="text-lg font-medium">{formatNumber(userCLT)} CLT</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                    <span className="text-gray-400">Your BFI:</span>
+                    <span className="text-lg font-medium">{formatNumber(userBFI)} BFI</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-400">Available to Borrow:</span>
+                    <span className="text-lg font-medium text-blue-400">{formatNumber(availableBorrow)} BFI</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Add Collateral */}
+            <div className="p-6 bg-gray-800 rounded-xl border border-gray-700 mb-8">
+              <h2 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Add Collateral
-              </button>
+              </h2>
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <input
+                    type="number"
+                    value={cltInput}
+                    onChange={(e) => setCltInput(e.target.value)}
+                    placeholder="Enter CLT amount"
+                    className="flex-1 p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <button
+                    onClick={handleAddCollateral}
+                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
+                  >
+                    Add Collateral
+                  </button>
+                </div>
+                <p className="text-sm text-gray-400">
+                  Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-gray-400">
-              Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span>
-            </p>
+
           </div>
         </div>
-
       </div>
     </div>
   );
