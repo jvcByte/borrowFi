@@ -149,7 +149,7 @@ export default function Dashboard() {
                             </button>
                         </div>
                         <p className="text-md text-gray-400 gap-2 md:gap-6 flex items-center">
-                            <p>Available: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
+                            <p>Your CLT Balance: <span className="text-blue-400">{formatNumber(userCLT)} CLT</span> </p>
                             {cltInputError && <p className="text-red-500">{cltInputError}</p>}
                         </p>
                     </div>
@@ -176,7 +176,7 @@ export default function Dashboard() {
                             </button>
                         </div>
                         <p className="text-md text-gray-400 gap-2 md:gap-6 flex items-center">
-                            <p>Available: <span className="text-blue-400">{formatNumber(userBFI)} BFI</span> </p>
+                            <p>Your BFI Balance: <span className="text-blue-400">{formatNumber(userBFI)} BFI</span> </p>
                             {bfiInputError && <p className="text-red-500">{bfiInputError}</p>}
                         </p>
                     </div>
