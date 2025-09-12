@@ -1,9 +1,9 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./Header";
-import SideBar from "./Sidebar";
-import Dashboard from "./Dashboard";
-import Borrow from "./Borrow";
-import Repay from "./Repay";
+import Header from "../components/Header";
+import SideBar from "../components/Sidebar";
+import Dashboard from "../components/Dashboard";
+import Borrow from "../components/Borrow";
+import Repay from "../components/Repay";
 
 const Main = () => {
   return (

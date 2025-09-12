@@ -1,4 +1,4 @@
-import Main from "./components/Main";
+import Main from "./Pages/Main";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { config } from "./config";
@@ -9,7 +9,7 @@ import Welcome from "./components/Welcome";
 const queryClient = new QueryClient();
 
 function App() {
-    const { address: connectedAccount } = useAccount();
+  const { address: connectedAccount } = useAccount();
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
