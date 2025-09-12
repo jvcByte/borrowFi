@@ -40,7 +40,7 @@ export default function SideBar() {
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <DashboardIcon />
-                            <span>Dashboard</span>
+                            <span className="text-lg md:text-xl font-medium">Dashboard</span>
                         </Link>
                         <Link
                             to="/borrow"
@@ -48,14 +48,14 @@ export default function SideBar() {
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <BorrowIcon />
-                            <span>Borrow</span>
+                            <span className="text-lg md:text-xl font-medium">Borrow</span>
                         </Link>
                         <Link
                             to="/repay"
                             className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             onClick={() => setIsSidebarOpen(false)}
                         >
-                            <span>Repay</span>
+                            <span className="text-lg md:text-xl font-medium">Repay</span>
                         </Link>
                     </div>
                 </div>
