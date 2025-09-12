@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { DashboardIcon } from "@/assets/custom-icons/dashboard-icon";
 import { BorrowIcon } from "@/assets/custom-icons/borrow-icon";
+import { RepayIcon } from "@/assets/custom-icons/repay-icon";
 
 export default function SideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -55,6 +56,7 @@ export default function SideBar() {
                             className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             onClick={() => setIsSidebarOpen(false)}
                         >
+                            <RepayIcon />
                             <span className="text-lg md:text-xl font-medium">Repay</span>
                         </Link>
                     </div>
