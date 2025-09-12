@@ -41,7 +41,7 @@ export default function SideBar() {
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <DashboardIcon />
-                            <span className="text-lg md:text-xl font-medium">Dashboard</span>
+                            <span className="text-lg md:text-xl font-base">Dashboard</span>
                         </Link>
                         <Link
                             to="/borrow"
@@ -49,7 +49,7 @@ export default function SideBar() {
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <BorrowIcon />
-                            <span className="text-lg md:text-xl font-medium">Borrow</span>
+                            <span className="text-lg md:text-xl font-base">Borrow</span>
                         </Link>
                         <Link
                             to="/repay"
@@ -57,7 +57,7 @@ export default function SideBar() {
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <RepayIcon />
-                            <span className="text-lg md:text-xl font-medium">Repay</span>
+                            <span className="text-lg md:text-xl font-base">Repay</span>
                         </Link>
                     </div>
                 </div>
