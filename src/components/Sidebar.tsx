@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { DashboardIcon } from "@/assets/custom-icons/dashboard-icon";
+import { BorrowIcon } from "@/assets/custom-icons/borrow-icon";
 
 export default function SideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -43,9 +44,10 @@ export default function SideBar() {
                         </Link>
                         <Link
                             to="/borrow"
-                            className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            className="flex gap-2 items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             onClick={() => setIsSidebarOpen(false)}
                         >
+                            <BorrowIcon />
                             <span>Borrow</span>
                         </Link>
                         <Link
