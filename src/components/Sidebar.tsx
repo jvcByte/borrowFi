@@ -53,7 +53,7 @@ export default function SideBar() {
                         </Link>
                         <Link
                             to="/repay"
-                            className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            className="flex gap-2 items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <RepayIcon />
