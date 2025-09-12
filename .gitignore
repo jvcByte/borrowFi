@@ -25,5 +25,4 @@ dist-ssr
 
 # Temp files
 src/assets/custom-icons/repay-icon.tsx
-src/assets/custom-icons/borrow-icon.tsx
-# src/assets/custom-icons/dashboard-icon.tsx
+# src/assets/custom-icons/borrow-icon.tsx
