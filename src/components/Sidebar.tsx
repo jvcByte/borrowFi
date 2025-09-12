@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { DashboardIcon } from "@/assets/custom-icons/dashboard-icon";
 import { BorrowIcon } from "@/assets/custom-icons/borrow-icon";
@@ -6,6 +6,11 @@ import { RepayIcon } from "@/assets/custom-icons/repay-icon";
 
 export default function SideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const location = useLocation();
+
+    const isActive = (path: string) => {
+        return location.pathname === path;
+    };
 
     return (
         <div>
@@ -37,26 +42,29 @@ export default function SideBar() {
                     <div className="space-y-2">
                         <Link
                             to="/"
-                            className="flex gap-2 items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            className={`flex gap-2 items-center p-2 rounded-lg transition-colors duration-200 ${isActive('/') ? 'bg-gray-800 text-white font-bold' : 'text-gray-300 hover:bg-gray-800'
+                                }`}
                             onClick={() => setIsSidebarOpen(false)}
                         >
-                            <DashboardIcon />
+                            <DashboardIcon className={`${isActive('/') ? 'text-whte fon-extrabold' : 'text-gray-400'}`} />
                             <span className="text-lg md:text-xl font-base">Dashboard</span>
                         </Link>
                         <Link
                             to="/borrow"
-                            className="flex gap-2 items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            className={`flex gap-2 items-center p-2 rounded-lg transition-colors duration-200 ${isActive('/borrow') ? 'bg-gray-800 text-white font-bold' : 'text-gray-300 hover:bg-gray-800'
+                                }`}
                             onClick={() => setIsSidebarOpen(false)}
                         >
-                            <BorrowIcon />
+                            <BorrowIcon className={`${isActive('/borrow') ? 'text-whte fon-extrabold' : 'text-gray-400'}`} />
                             <span className="text-lg md:text-xl font-base">Borrow</span>
                         </Link>
                         <Link
                             to="/repay"
-                            className="flex gap-2 items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            className={`flex gap-2 items-center p-2 rounded-lg transition-colors duration-200 ${isActive('/repay') ? 'bg-gray-800 text-white font-bold' : 'text-gray-300 hover:bg-gray-800'
+                                }`}
                             onClick={() => setIsSidebarOpen(false)}
                         >
-                            <RepayIcon />
+                            <RepayIcon className={`${isActive('/repay') ? 'text-whte fon-extrabold' : 'text-gray-400'}`} />
                             <span className="text-lg md:text-xl font-base">Repay</span>
                         </Link>
                     </div>
