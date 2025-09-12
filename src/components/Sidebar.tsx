@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { DashboardIcon } from "@/assets/custom-icons/dashboard-icon";
 
 export default function SideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,9 +35,10 @@ export default function SideBar() {
                     <div className="space-y-2">
                         <Link
                             to="/"
-                            className="flex items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                            className="flex gap-2 items-center p-2 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             onClick={() => setIsSidebarOpen(false)}
                         >
+                            <DashboardIcon />
                             <span>Dashboard</span>
                         </Link>
                         <Link
