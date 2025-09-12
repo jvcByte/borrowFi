@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BorrowFi</string>
+    <string name="title_activity_main">BorrowFi</string>
+    <string name="package_name">borrowfi11.vercel.app</string>
+    <string name="custom_url_scheme">borrowfi11.vercel.app</string>
+</resources>
