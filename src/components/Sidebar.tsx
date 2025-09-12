@@ -30,7 +30,7 @@ export default function SideBar() {
             {/* Sidebar */}
             <div
                 className={`${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
-                fixed md:fixed inset-y-0 top-16 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
+                fixed md:fixed inset-y-0 top-16 md:top-20 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
                 bg-gray-900 border-r border-gray-800 overflow-y-auto`}
             >
                 <div className="flex-1 p-4 overflow-y-hidden">
