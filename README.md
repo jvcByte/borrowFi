@@ -2,7 +2,7 @@
 
 > **Note**: This is a playground project for experimenting with Web3 technologies. It's not intended for production use.
 
-A simple decentralized finance (DeFi) interface built with modern web technologies to explore blockchain interactions.
+A simple decentralized application to demonstrats how borrowing works on blockchain.
 
 ## 🧰 Tech Stack
 
